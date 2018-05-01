@@ -1,0 +1,47 @@
+---
+title: "Participation 6"
+author: "Yeh-Sun Lee"
+date: "4/30/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("knitr")
+source("exercise.R")
+```
+
+# **Data Visualization Demonstrations**
+
+All of these visualizations are used with the Diamond dataset with 1000 random rows, as used during the lecture.
+
+## Visualization #1
+``` {r, echo = FALSE}
+pastel_bar
+```
+
+## Visualization #2
+``` {r, echo = FALSE}
+data_plot
+```
+
+## Visualization #3
+``` {r, echo = FALSE}
+bell_curve
+```
+
+## Visualization #4
+``` {r, echo = FALSE}
+error_bar
+```
+
+## Visualization #5
+``` {r, echo = FALSE}
+color_plots
+```
+
+
+
+
+
+

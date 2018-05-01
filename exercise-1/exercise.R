@@ -29,8 +29,8 @@ ggplot(data = diamonds_sample) +
 
 # Draw the same plot as above, but color each of the points based on their 
 # clarity.
-ggplot(data = diamonds_sample) + 
-  geom_point(mapping = aes(x = carat, y = price, color = clarity))
+data_plot <- ggplot(data = diamonds_sample) + 
+              geom_point(mapping = aes(x = carat, y = price, color = clarity))
 
 # Draw the same plot as above, but for the entire `diamonds` data set. Note this
 # may take a few seconds to generate.
@@ -54,8 +54,9 @@ ggplot(data = diamonds_sample) +
   geom_point(mapping = aes(x = carat, y = cut, size = price))
 
 # Try coloring the above plot based on the diamond's price!
-ggplot(data = diamonds_sample) +
-  geom_point(mapping = aes(x = carat, y = cut, size = price, color = price))
+color_plots <- ggplot(data = diamonds_sample) +
+                geom_point(mapping = aes(x = carat, y = cut, size = price,
+                                         color = price))
 
 # Draw a line plot (with line geometry) for `diamonds_sample`. The x-position 
 # should be mapped to carat, y-position to price, and color to cut.
@@ -74,25 +75,27 @@ ggplot(data = diamonds_sample) +
 # Add an aesthetic property that will _fill_ each bar geometry based on the 
 # `clarity` of the diamonds. 
 # What kind of chart do you get?
-ggplot(data = diamonds_sample) +
-  geom_bar(mapping = aes(x = cut, fill = clarity))
-
+pastel_bar <- ggplot(data = diamonds_sample) +
+                geom_bar(mapping = aes(x = cut, fill = clarity)) + 
+                scale_fill_brewer(palette = "Pastel1")
+  
 # Draw a histogram (using histogram geometry) of diamond prices.
 # Try mapping each bar based on clarity as well!
 ggplot(data = diamonds_sample) +
   stat_count(aes(x = cut, fill = clarity))
 
 # (For a more traditional "bell-curve", make a histogram of diamond `depth`)
-ggplot(data = diamonds_sample) +
-  stat_count(aes(x = depth, fill = clarity))
+bell_curve <- ggplot(data = diamonds_sample) +
+                stat_count(aes(x = depth, fill = clarity)) + 
+                scale_fill_brewer(palette = "PiYG")
 
 
 # Draw a plot of the `diamonds_sample` data (price by carat), with both points 
 # for each diamond AND smoothed lines for each cut (hint: in a separate color)
 # Give the points an `alpha` (transparency) of 0.3 to make the plot look nicer
 ggplot(data = diamonds_sample) +
-  geom_point(mapping = aes(x = carat, y = price, alpha = 0.3), color = "purple") +
-  geom_smooth(mapping = aes(x= carat, y = price), color = "pink")
+geom_point(mapping = aes(x = carat, y = price, color = cut), alpha = 0.3) +
+geom_smooth(mapping = aes(x= carat, y = price, color = cut), se = FALSE)
 
 ## Bonus
 # Draw a bar chart of average diamond prices by clarity, and include "error bars"
@@ -104,8 +107,13 @@ ggplot(data = diamonds_sample) +
 # Start by creating a data frame `clarity_summary` that includes summarized data 
 # for each clarity group. Your summary data should include the mean price and the
 # standard error of the price.
-
-
+clarity_summary <- diamonds %>%
+  group_by(clarity) %>%
+  summarise(mean = mean(price), sd = sd(price), se = sd / sqrt(length(price)))
+  
 # Then draw the plot. The error bars should stretch from the mean-error to the 
 # mean+error.
-
+error_bar <- ggplot(data = clarity_summary, mapping = aes(x = clarity, y = mean)) +
+              geom_bar(mapping = aes(fill = clarity), stat = "identity") +
+              geom_errorbar(mapping = aes(ymin = (mean-se), ymax = (mean+se))) +
+              scale_fill_brewer(palette = "PuRd")
